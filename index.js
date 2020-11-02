@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const handlebars = require('express-handlebars');
 const apiRoutes = require('./routes');
+const Cors = require('cors');
 
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
@@ -17,6 +18,8 @@ const connectMongo = require('./src/controllers/db.controller');
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(Cors());
+
 app.engine('handlebars', handlebars());
 app.set('view engine', 'handlebars');
 app.set('views', 'src/views');
@@ -27,12 +30,16 @@ app.use('/assets', express.static(path.join(__dirname, 'public')));
 
 news(app);
 
+
+
 // app.use('/api/v1', apiNews);
 app.use('/api', jsonParser);
 
 app.use('/api', apiRoutes);
 
-app.get('/airbnb', function (req, res) {
+
+
+/*app.get('/airbnb', function (req, res) {
     connectMongo('listingsAndReviews').then(function (collection) {
         collection.find(function(results){
             res.send(results);
@@ -40,7 +47,7 @@ app.get('/airbnb', function (req, res) {
     }).catch(function (err) {
         res.send('Error');
     });
-});
+});*/
 
 app.listen(port, () => {
     console.log('App is running in port ' + port);
